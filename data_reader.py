@@ -186,5 +186,5 @@ for i in raw_data:
             final_data = np.vstack((final_data, row))
 
 
-
+np.savetxt(fname="doyhhmmss-doy_ddd-pressure-temperature-humidity.txt", X=final_data, fmt='%09d %03.5f %.2f %02.2f %.3f')
 
