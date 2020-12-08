@@ -236,7 +236,7 @@ df2 = df2.loc[~df2.index.duplicated(keep='first')]
 
 final_df = pd.concat([df1, df2], axis=1, sort=True)
 
-final_df.to_json(join_path(data_dir, "TristanHespData.json"))
+# final_df.to_json(join_path(data_dir, "TristanHespData.json"))
 
 # save2TXT = final_df.copy()
 # np.savetxt(fname="doyhhmmss-doy_ddd-pressure-temperature-humidity.txt",
