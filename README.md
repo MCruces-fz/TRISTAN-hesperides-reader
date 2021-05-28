@@ -1,7 +1,5 @@
 # TRISTAN-hesp
- Reading data from Tristan on Hesperion (?)
+ Reading data from Tristan on Hesperides
 
 
-Código con el horario militar:
-
-https://es.wikipedia.org/wiki/Huso_horario_militar
+Código con el horario militar [aquí](https://es.wikipedia.org/wiki/Huso_horario_militar)
