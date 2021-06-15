@@ -160,6 +160,11 @@ print("doyhhmmss\tdoy.ddd\tPress.\tTemp.\tHum.")
 
 final_data = np.zeros([0, 5])
 
+
+# ===============================================
+#    R E A D   P R E S S ,   T E M P ,   H U M
+# ===============================================
+
 for i in raw_data:  # Iterate over dictionary of Pandas Dataframes
     for j in raw_data[i]:  # Iterate over Pandas Dataframe
         doy = get_doy(i, j)
@@ -200,6 +205,17 @@ for i in raw_data:  # Iterate over dictionary of Pandas Dataframes
             row = np.hstack((doyhhmmss, doy_ddd, pressure, temperature, humidity))
             final_data = np.vstack((final_data, row))
 
+df1 = pd.DataFrame(final_data[:, 1:],
+                   index=final_data[:, 0].astype(np.int),
+                   columns=["DOY dec", "Pressure", "Temperature", "Humidity"])
+
+# print(df1.iloc[828:900])  # Montevideo Stop
+
+
+# =====================================================
+#    R E A D   L A T I T U D E ,   L O N G I T U D E
+# =====================================================
+
 f_pos_data = np.zeros([0, 3])
 for i in pos_data.iterrows():
     row = i[1]  # Tuples (row number, row data)
@@ -216,27 +232,37 @@ for i in pos_data.iterrows():
     # ============================================ #
 
     datime = float(f"{fh.dayofyear}{fh.hour:02d}{fh.minute:02d}{fh.second:02d}")
-    try:
-        lat, lon = float(lat), float(lon)
-    except ValueError:
-        lat, lon = np.nan, np.nan
+
+    # ======== Clunky Fix: Montevideo Stop ======= #
+    if 338140000 < datime < 341130000:
+        lat, lon = -35.166667, -56.133333  # Montevideo Lat & Lon
+    # ============================================ #
+    else:
+        try:
+            lat, lon = float(lat), float(lon)
+        except ValueError:
+            print(f"Passing ValueError when: lat, lon = float({lat}), float({lon}), usin NaN instead.")
+            lat, lon = np.nan, np.nan
     line = np.hstack((datime, lat, lon))
     f_pos_data = np.vstack((f_pos_data, line))
-
-df1 = pd.DataFrame(final_data[:, 1:],
-                   index=final_data[:, 0].astype(np.int),
-                   columns=["DOY dec", "Pressure", "Temperature", "Humidity"])
 
 df2 = pd.DataFrame(f_pos_data[:, 1:],
                    index=f_pos_data[:, 0].astype(np.int),
                    columns=["Latitude", "Longitude"])
 
+# print(df2.iloc[502:574])  # Montevideo Stop
+
 df1 = df1.loc[~df1.index.duplicated(keep='first')]
 df2 = df2.loc[~df2.index.duplicated(keep='first')]
 
+
+# =====================================================
+#    M E R G E :   Press   Temp   Humid   Lat   Long
+# =====================================================
+
 final_df = pd.concat([df1, df2], axis=1, sort=True)
 
-# final_df.to_json(join_path(data_dir, "TristanHespData.json"))
+final_df.to_json(join_path(data_dir, "TristanHespData.json"))
 
 # save2TXT = final_df.copy()
 # np.savetxt(fname="doyhhmmss-doy_ddd-pressure-temperature-humidity.txt",
