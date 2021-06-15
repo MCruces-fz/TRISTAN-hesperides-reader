@@ -29,6 +29,7 @@ MANIFEST
 
 # My Gitignores
 .idea/*
+'.~lock.*
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
