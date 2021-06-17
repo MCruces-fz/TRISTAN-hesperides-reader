@@ -16,6 +16,7 @@ if ROOT_DIR not in sys.path:
 def isNaN(num):
     """
     It cheks if num is NaN
+    
     :param num: number to check
     :return: True if NaN, False if not.
     """
@@ -25,6 +26,7 @@ def isNaN(num):
 def decimal_doy(do: int, ho: int, mi: int, se: int):
     """
     Converts DOY and time integers to floating point DOY.
+    
     :param do: Day Of the Year
     :param ho: Hours
     :param mi: Minutes
@@ -39,6 +41,7 @@ def decimal_doy(do: int, ho: int, mi: int, se: int):
 def rom2arab(roman: str):
     """
     Converts roman numbers to arabic numbers
+
     :param roman: String roman number
     :return: Integer arabic number
     """
@@ -60,6 +63,7 @@ def get_doy(doc_name: str, sheet_name: str):
     """
     Specific function that returns the Day Of the Year (DOY) by passing document
     and sheet names from the files with extension .xlsx from Rafael Hermida 2019.
+
     :param doc_name: (String) Name of the document
     :param sheet_name: (String) Name of the sheet
     :return: (Integer) DOY
@@ -261,6 +265,8 @@ df2 = df2.loc[~df2.index.duplicated(keep='first')]
 # =====================================================
 
 final_df = pd.concat([df1, df2], axis=1, sort=True)
+
+# print(final_df.iloc[807:878])  # Montevideo Stop
 
 final_df.to_json(join_path(data_dir, "TristanHespData.json"))
 
